@@ -97,7 +97,7 @@ let ScrapeService = class ScrapeService {
             const hashedResponse = this.hashString(JSON.stringify(res));
             const fileContent = await this.getFileContent(filePath);
             if (fileContent === hashedResponse) {
-                console.log('Same content');
+                console.log('Same content', link);
             }
             else {
                 await this.onLeaderboardChange(fileName);

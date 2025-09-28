@@ -16,6 +16,7 @@ const path_1 = require("path");
 const config_1 = require("@nestjs/config");
 const schedule_1 = require("@nestjs/schedule");
 const crypto = require("crypto");
+const get_quest_1 = require("./quest/get-quest");
 let ScrapeService = class ScrapeService {
     configService;
     botToken;
@@ -40,11 +41,16 @@ let ScrapeService = class ScrapeService {
     remove(id) {
         return `This action removes a #${id} scrape`;
     }
+    getQuestDetails(eventName, questId) {
+        const cookie = this.cookieData();
+        const questDetailsService = new get_quest_1.QuestDetails(eventName, questId, cookie);
+        return questDetailsService.getQuestDetails();
+    }
     buildFilePath(name) {
         return (0, path_1.join)(__dirname, "../assets", name);
     }
     cookieData() {
-        return "cookie-config={%22analytics%22:true%2C%22marketing%22:true%2C%22functional%22:true}; intercom-id-nketzd4e=272128c4-dbde-4692-b486-78e583258151; intercom-device-id-nketzd4e=cd97a6b3-32a2-41f7-b70f-3681cf4c4662; _fbp=fb.1.1756936701255.212593386515633543; _tt_enable_cookie=1; _ttp=01K48SHHRAAFNM2WS65XHV80XD_.tt.1; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI4OWNkNTYxNS1hYTM2LTQ2NDAtYTI4OC05MzdmZWY0MWMyZGUiLCJhY2NvdW50VHlwZSI6ImVtYWlsIiwiZW1haWwiOiJkaXNjb0Bnb2R3aW5zLndvcmsuZ2QiLCJsYXN0RW1haWxDaGVjayI6MTc1NjkzNjg2MTE4MCwiaWF0IjoxNzU2OTM2ODYxLCJleHAiOjE3NTk1Mjg4NjF9.S-A1GG5laBW2-lu18gmYDN54GcTYSXeQR9j5Cf94V2Q; user_metadata=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI4OWNkNTYxNS1hYTM2LTQ2NDAtYTI4OC05MzdmZWY0MWMyZGUiLCJpYXQiOjE3NTY5MzY4NjEsImV4cCI6MTc1OTUyODg2MX0.Hhs7oiyFL6pVfS01p6QHc0SguryhLAxx4L_BhT7KqD0; ttcsid=1758854531548::saqOlgufhFqgzTL6G3_Q.5.1758854821415.0; ttcsid_CO6OII3C77UAL9O5M6RG=1758854531546::grugUcN4TmX7cqoRuG7W.5.1758854822680.0; referrer-url=https://zealy.io/my-communities; intercom-session-nketzd4e=TlZ1MzNSZkFWc2JjK3pBblErSXBhMVpuTitPMmIyb1FmNkFqQ3lCZStZTlNuNndaZ3BLb2tVS2k1dVNSQjlyS3l3Q0NhZmF5MHVNMGJBTC9PVmN5aGpBZ3BtZTRQcDFyU281Z2lvZkdRcTQ9LS1nT3Q2NVN5V1FWekFySDY4Y09RWUlRPT0=--58c0539572952ea8b1717e2a78b893f01c089540; connect.sid=s%3ANMoaWqCDyJllCy8GCG1M7BrxUCYQBlcV.laFawrlm3vTYK%2F0Qlo4s%2FFXr9QlwUXmTg7yyrSBmghQ; mp_331e7ed57ec193ae7fde9e90b8ef68d4_mixpanel=%7B%22distinct_id%22%3A%22%24device%3Ab9e37084-f7f1-46fb-8ef4-503740eb01f4%22%2C%22%24device_id%22%3A%22b9e37084-f7f1-46fb-8ef4-503740eb01f4%22%2C%22%24initial_referrer%22%3A%22%24direct%22%2C%22%24initial_referring_domain%22%3A%22%24direct%22%2C%22__mps%22%3A%7B%7D%2C%22__mpso%22%3A%7B%22%24initial_referrer%22%3A%22%24direct%22%2C%22%24initial_referring_domain%22%3A%22%24direct%22%7D%2C%22__mpus%22%3A%7B%7D%2C%22__mpa%22%3A%7B%7D%2C%22__mpu%22%3A%7B%7D%2C%22__mpr%22%3A%5B%5D%2C%22__mpap%22%3A%5B%5D%7D";
+        return "cookie-config={%22analytics%22:true%2C%22marketing%22:true%2C%22functional%22:true}; intercom-id-nketzd4e=272128c4-dbde-4692-b486-78e583258151; intercom-device-id-nketzd4e=cd97a6b3-32a2-41f7-b70f-3681cf4c4662; _fbp=fb.1.1756936701255.212593386515633543; _tt_enable_cookie=1; _ttp=01K48SHHRAAFNM2WS65XHV80XD_.tt.1; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI4OWNkNTYxNS1hYTM2LTQ2NDAtYTI4OC05MzdmZWY0MWMyZGUiLCJhY2NvdW50VHlwZSI6ImVtYWlsIiwiZW1haWwiOiJkaXNjb0Bnb2R3aW5zLndvcmsuZ2QiLCJsYXN0RW1haWxDaGVjayI6MTc1NjkzNjg2MTE4MCwiaWF0IjoxNzU2OTM2ODYxLCJleHAiOjE3NTk1Mjg4NjF9.S-A1GG5laBW2-lu18gmYDN54GcTYSXeQR9j5Cf94V2Q; user_metadata=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI4OWNkNTYxNS1hYTM2LTQ2NDAtYTI4OC05MzdmZWY0MWMyZGUiLCJpYXQiOjE3NTY5MzY4NjEsImV4cCI6MTc1OTUyODg2MX0.Hhs7oiyFL6pVfS01p6QHc0SguryhLAxx4L_BhT7KqD0; ttcsid=1758854531548::saqOlgufhFqgzTL6G3_Q.5.1758854821415.0; ttcsid_CO6OII3C77UAL9O5M6RG=1758854531546::grugUcN4TmX7cqoRuG7W.5.1758854822680.0; referrer-url=https://zealy.io/cw/clapp/questboard; connect.sid=s%3ADpF18fxtM1kwQ2B7GV6y9Gtgfm63dukc.sabxxV2fawStiwmhhgexRo153cUnAFFkldgUlTuBBAk; mp_331e7ed57ec193ae7fde9e90b8ef68d4_mixpanel=%7B%22distinct_id%22%3A%22%24device%3Ab9e37084-f7f1-46fb-8ef4-503740eb01f4%22%2C%22%24device_id%22%3A%22b9e37084-f7f1-46fb-8ef4-503740eb01f4%22%2C%22%24initial_referrer%22%3A%22%24direct%22%2C%22%24initial_referring_domain%22%3A%22%24direct%22%2C%22__mps%22%3A%7B%7D%2C%22__mpso%22%3A%7B%22%24initial_referrer%22%3A%22%24direct%22%2C%22%24initial_referring_domain%22%3A%22%24direct%22%7D%2C%22__mpus%22%3A%7B%7D%2C%22__mpa%22%3A%7B%7D%2C%22__mpu%22%3A%7B%7D%2C%22__mpr%22%3A%5B%5D%2C%22__mpap%22%3A%5B%5D%7D; intercom-session-nketzd4e=MlRiR09wdTJBWlJIS0N2MVl0MUQ3aGc2MW1RWDhLeWIyVFlWTDNRUmt1L1dzTzRrQ3NpKzRhMmdHMEQrcmhTZ3R3YTFHRGtLVUZra0RBQ2NPS1MxdG9na1o5WlpReUlWNkg4dlJ0YVhHblk9LS1zTGpxTGsycHRGYnJhejlpT21Ic3ZnPT0=--dfdaebfd0ed8fcfcfb142f2527c303af40faf3ff";
     }
     async sendMessage(chatId, text) {
         await fetch(`${this.baseUrl}/sendMessage`, {
@@ -78,11 +84,31 @@ let ScrapeService = class ScrapeService {
         };
     }
     async getFileContent(filePath) {
-        const fileContent = await fs_1.promises.readFile(filePath, "utf-8");
-        return fileContent;
+        try {
+            const fileContent = await fs_1.promises.readFile(filePath, "utf-8");
+            return fileContent;
+        }
+        catch (err) {
+            if (err.code === "ENOENT") {
+                await fs_1.promises.writeFile(filePath, "", "utf-8");
+                return "";
+            }
+            throw err;
+        }
     }
     async editFileContent(filePath, data) {
         await fs_1.promises.writeFile(filePath, data);
+    }
+    extractUsername(url) {
+        try {
+            const urlObj = new URL(url);
+            const parts = urlObj.pathname.split("/");
+            return parts[2] || null;
+        }
+        catch (error) {
+            console.error("Invalid URL:", error);
+            return null;
+        }
     }
     async getZealyData(link, fileName) {
         try {
@@ -97,12 +123,12 @@ let ScrapeService = class ScrapeService {
             const hashedResponse = this.hashString(JSON.stringify(res));
             const fileContent = await this.getFileContent(filePath);
             if (fileContent === hashedResponse) {
-                console.log('Same content', link);
+                console.log("Same content", link);
             }
             else {
-                await this.onLeaderboardChange(fileName);
+                await this.onLeaderboardChange(link);
                 this.editFileContent(filePath, hashedResponse);
-                console.log('different content');
+                console.log("different content");
             }
             return res;
         }
@@ -110,11 +136,12 @@ let ScrapeService = class ScrapeService {
             console.error(error);
         }
     }
-    async onLeaderboardChange(name) {
+    async onLeaderboardChange(link) {
         console.log("Running your custom logic...");
-        await this.sendMessage(5669972257, `Task Added`);
-        await this.sendMessage(5727225410, `Task Added`);
-        await this.sendMessage(7691672328, `Task Added`);
+        const telegramIds = process.env.TELEGRAM_IDS?.split(",") || [];
+        for (const id of telegramIds) {
+            await this.sendMessage(Number(id.trim()), `Task Added ${this.extractUsername(link)}`);
+        }
     }
     async scrapeData() {
         const rawLinks = this.configService.get("ZEALY_LINKS");
@@ -130,13 +157,10 @@ let ScrapeService = class ScrapeService {
             console.error("Invalid ZEALY_LINKS JSON in .env", err);
             return;
         }
-        for (const event of links) {
-            if (!event.link || !event.fileName) {
-                console.error("Invalid entry in ZEALY_LINKS:", event);
-                continue;
-            }
-            await this.getZealyData(event.link, event.fileName);
-        }
+        const tasks = links
+            .filter((event) => event.link && event.fileName)
+            .map((event) => this.getZealyData(event.link, event.fileName));
+        await Promise.all(tasks);
     }
 };
 exports.ScrapeService = ScrapeService;

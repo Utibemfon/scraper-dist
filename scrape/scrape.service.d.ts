@@ -11,6 +11,7 @@ export declare class ScrapeService {
     findOne(id: number): string;
     update(id: number, updateScrapeDto: UpdateScrapeDto): string;
     remove(id: number): string;
+    getQuestDetails(eventName: string, questId: string): Promise<any>;
     private buildFilePath;
     private cookieData;
     sendMessage(chatId: number, text: string): Promise<void>;
@@ -19,7 +20,8 @@ export declare class ScrapeService {
     buildRequestOptions(cookieData: string): RequestInit;
     getFileContent(filePath: string): Promise<string>;
     editFileContent(filePath: string, data: any): Promise<void>;
+    extractUsername(url: string): string | null;
     getZealyData(link: string, fileName: string): Promise<any>;
-    onLeaderboardChange(name: string): Promise<void>;
+    onLeaderboardChange(link: string): Promise<void>;
     scrapeData(): Promise<void>;
 }
